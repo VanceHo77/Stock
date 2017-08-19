@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Result</title>
+<style>
+table{
+  text-align: left;
+}
+</style>
+</head>
+<body>
+  <h2 th:text="'共 ' + ${#lists.size(dataList)} + ' 筆'"></h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>名稱</th>
+      <th>收盤價</th>
+    </tr>
+    <th:block th:each="stock : ${dataList}">
+      <tr>
+        <td th:text="${stock.stockId}" />
+        <td><a th:href="@{https://tw.stock.yahoo.com/q/ta(s=${stock.stockId})}" target="_blank"><span th:text="${stock.name}"></span></a></td>
+        <td th:text="${stock.closingPrice}" />
+      </tr>
+    </th:block>
+  </table>
+</html>

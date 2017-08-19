@@ -1,0 +1,127 @@
+package com.example.demo.bean;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.apache.solr.client.solrj.SolrQuery.SortClause;
+
+public class QueryForm implements Serializable {
+
+	private static final long serialVersionUID = -4622629135977020752L;
+
+	private String query = "*:*";
+
+	private String[] fQuery = null;
+
+	private String beginDate;
+
+	private String endDate;
+
+	private List<SortClause> sorts;
+
+	private Boolean dataImportStatus;
+
+	/** 上漲天數 */
+	private Integer riseDays;
+
+	/** 周六日修正天數 */
+	private Integer offsetDays = 0;
+
+	/** 最低收盤價 */
+	private Double minClosingPrice;
+
+	/** 最高收盤價 */
+	private Double maxClosingPrice;
+
+	/** 最小成交股數 */
+	private Integer minDealStockAmount;
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public String[] getfQuery() {
+		return fQuery;
+	}
+
+	public void setfQuery(String[] fQuery) {
+		this.fQuery = fQuery;
+	}
+
+	public String getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(String beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public List<SortClause> getSorts() {
+		return sorts;
+	}
+
+	public void setSorts(List<SortClause> sorts) {
+		this.sorts = sorts;
+	}
+
+	public Boolean getDataImportStatus() {
+		return dataImportStatus;
+	}
+
+	public void setDataImportStatus(Boolean dataImportStatus) {
+		this.dataImportStatus = dataImportStatus;
+	}
+
+	public Integer getRiseDays() {
+		return riseDays;
+	}
+
+	public void setRiseDays(Integer riseDays) {
+		this.riseDays = riseDays;
+	}
+
+	public Integer getOffsetDays() {
+		return offsetDays;
+	}
+
+	public void setOffsetDays(Integer offsetDays) {
+		this.offsetDays = offsetDays;
+	}
+
+	public Double getMinClosingPrice() {
+		return minClosingPrice;
+	}
+
+	public void setMinClosingPrice(Double minClosingPrice) {
+		this.minClosingPrice = minClosingPrice;
+	}
+
+	public Double getMaxClosingPrice() {
+		return maxClosingPrice;
+	}
+
+	public void setMaxClosingPrice(Double maxClosingPrice) {
+		this.maxClosingPrice = maxClosingPrice;
+	}
+
+	public Integer getMinDealStockAmount() {
+		return minDealStockAmount;
+	}
+
+	public void setMinDealStockAmount(Integer minDealStockAmount) {
+		this.minDealStockAmount = minDealStockAmount;
+	}
+
+}
