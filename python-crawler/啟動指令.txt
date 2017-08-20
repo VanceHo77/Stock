@@ -1,0 +1,6 @@
+爬當前日期:python crawl.py
+
+往回爬到指定日期:python crawl.py -b 2016 08 01
+
+[自製]
+往回爬到dataImport.txt指定日期:python crawl.py -d
