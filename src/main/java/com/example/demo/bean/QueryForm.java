@@ -28,7 +28,7 @@ public class QueryForm implements Serializable {
 	private Integer riseDays;
 
 	/** 持平時波動範圍 */
-	private Integer stableRange;
+	private Double stableRange;
 
 	/** 周六日修正天數 */
 	private Integer offsetDays = 0;
@@ -138,11 +138,11 @@ public class QueryForm implements Serializable {
 		this.minDealStockAmount = minDealStockAmount;
 	}
 
-	public Integer getStableRange() {
+	public Double getStableRange() {
 		return stableRange;
 	}
 
-	public void setStableRange(Integer stableRange) {
+	public void setStableRange(Double stableRange) {
 		this.stableRange = stableRange;
 	}
 
