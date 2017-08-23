@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.bean.QueryForm;
 import com.example.demo.model.StockSchema;
+import com.example.demo.model.TrendStatus;
 import com.example.demo.util.DateUtil;
 
 @Service
@@ -42,9 +43,12 @@ public class StockService {
 
 	static Map<String, String> StockMappings;
 
+	private static String lastUpdated;
+
 	static {
 		try {
 			StockMappings = readMapping();
+			lastUpdated = Files.lines(Paths.get("./dataImport.txt")).findFirst().get();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -126,8 +130,8 @@ public class StockService {
 	}
 
 	private static boolean doDelta(String csvDate) throws ParseException {
-		Instant i1 = DateUtil.getCurDate();
-		Instant i2 = DateUtil.getCsvDate(csvDate);
+		Instant i1 = DateUtil.parserDateText(lastUpdated);
+		Instant i2 = DateUtil.parserDateText(csvDate);
 		boolean b1 = i1.isBefore(i2);
 		boolean b2 = i1.equals(i2);
 		return b1 || b2;
@@ -149,7 +153,7 @@ public class StockService {
 		}
 	}
 
-	public List<StockSchema> queryRisingTrend(QueryForm form) {
+	public List<StockSchema> query(QueryForm form) {
 
 		String[] fqAry = new String[3];
 		fqAry[0] = "date_dt:[NOW-" + (form.getRiseDays() + form.getOffsetDays()) + "DAY TO NOW]";// 抓前N天的資料
@@ -165,7 +169,7 @@ public class StockService {
 		List<StockSchema> stockList = solrService.query(form);
 
 		StockSchema beforeStock = null;
-		// 上漲次數
+		// 上漲/跌/持平次數
 		int riseCount = 0;
 		// 符合條件
 		List<String> hitStockStrs = new ArrayList<>();
@@ -189,10 +193,28 @@ public class StockService {
 					riseCount = 0;
 					continue;
 				} else if (beforeStock.getStockId().equals(stock.getStockId())) {
-					if (curPrice >= beforeStock.getClosingPrice()) {
-						beforeStock = stock;
-						riseCount++;
-						continue;
+					// 上漲/下跌/持平趨勢選擇
+					if (TrendStatus.上漲.name().equals(form.getTrendStatus())) {
+						if (curPrice >= beforeStock.getClosingPrice()) {
+							beforeStock = stock;
+							riseCount++;
+							continue;
+						}
+					} else if (TrendStatus.下跌.name().equals(form.getTrendStatus())) {
+						if (curPrice <= beforeStock.getClosingPrice()) {
+							beforeStock = stock;
+							riseCount++;
+							continue;
+						}
+					} else if (TrendStatus.持平.name().equals(form.getTrendStatus())) {
+						double percent = beforeStock.getClosingPrice() * 0.01 * form.getStableRange();
+						double lower = curPrice - percent;
+						double upper = curPrice + percent;
+						if ((lower <= curPrice) && (curPrice) <= upper) {
+							beforeStock = stock;
+							riseCount++;
+							continue;
+						}
 					}
 				}
 
@@ -219,9 +241,20 @@ public class StockService {
 		return hitStocks;
 	}
 
+	public void chooseThrend(QueryForm form, double curPrice, double beforeClosingPrice) {
+		if (TrendStatus.上漲.name().equals(form.getTrendStatus())) {
+
+		} else if (TrendStatus.下跌.name().equals(form.getTrendStatus())) {
+
+		} else if (TrendStatus.持平.name().equals(form.getTrendStatus())) {
+
+		}
+
+	}
+
 	public static void main(String... strings) throws IOException, ParseException, InterruptedException {
 		// StockService.readStockData();
-		System.out.println(doDelta("106/8/16"));
+		System.out.println(doDelta("106/08/23"));
 
 	}
 }

@@ -72,7 +72,7 @@ public class SolrService {
 
 			if (docs != null && docs.size() > 0) {
 				HttpSolrClient client = new HttpSolrClient(URL);
-				int maxRows = 50000;
+				int maxRows = 10000;
 				BigDecimal total = new BigDecimal(String.valueOf(docs.size()));
 				BigDecimal div = new BigDecimal(String.valueOf(maxRows));
 				int loopCount = ((total.divide(div, 0, BigDecimal.ROUND_UP)).toBigInteger()).intValue();
@@ -98,6 +98,7 @@ public class SolrService {
 		} catch (Exception e) {
 			System.out.println(e);
 			rpsMsg.setIsSuccess(false);
+			return rpsMsg;
 		}
 		rpsMsg.setIsSuccess(true);
 		return rpsMsg;

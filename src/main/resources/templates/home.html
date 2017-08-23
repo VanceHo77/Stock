@@ -12,6 +12,17 @@
 		} else if (w == 0) {//週日
 			document.getElementById("offsetDays").value = 2;
 		}
+		document
+				.getElementById("trendStatus")
+				.addEventListener(
+						"change",
+						function() {
+							if (this.value == "持平") {
+								document.getElementById("stableBlock").style.display = 'block';
+							} else {
+								document.getElementById("stableBlock").style.display = 'none';
+							}
+						});
 	};
 </script>
 </head>
@@ -30,7 +41,13 @@
       股票ID/名稱<input type="text" name="query" value="*:*" />
     </div>
     <div class="form-group">
-      上漲天數<input type="number" name="riseDays" value="3" /> 週六/日修正天數<select id="offsetDays" name="offsetDays">
+      趨勢 <select id="trendStatus" name="trendStatus">
+        <option th:each="thrend: ${trendStatus}" th:value="${thrend.name()}" th:text="${thrend.name()}"></option>
+      </select>
+      天數<input type="number" name="riseDays" value="3" /> 
+      <span id="stableBlock" style="display: none;">持平波動範圍  &plusmn;(%)
+      <input type="number" name="stableRange" /></span>週六/日修正天數
+      <select id="offsetDays" name="offsetDays">
         <option value="0">無</option>
         <option value="1">星期六(+1天)</option>
         <option value="2">星期日(+2天)</option>

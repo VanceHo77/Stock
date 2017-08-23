@@ -44,7 +44,7 @@ public class DateUtil {
 		return d;
 	}
 
-	public static Instant getCsvDate(String date) throws ParseException {
+	public static Instant parserDateText(String date) throws ParseException {
 		String[] ary = date.split("/");
 		int year = Integer.parseInt(ary[0]) + 1911;
 		int month = Integer.parseInt(ary[1]);

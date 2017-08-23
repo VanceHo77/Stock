@@ -32,8 +32,8 @@ public class StockController {
 	SolrService solrkService;
 
 	@RequestMapping(value = "/query/risingTrend")
-	public String queryRisingTrend(@ModelAttribute QueryForm form, Model model) {
-		List<StockSchema> list = stockService.queryRisingTrend(form);
+	public String query(@ModelAttribute QueryForm form, Model model) {
+		List<StockSchema> list = stockService.query(form);
 		model.addAttribute("dataList", list);
 		return "result";
 	}

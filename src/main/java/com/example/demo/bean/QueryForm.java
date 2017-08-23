@@ -7,7 +7,7 @@ import org.apache.solr.client.solrj.SolrQuery.SortClause;
 
 public class QueryForm implements Serializable {
 
-	private static final long serialVersionUID = -4622629135977020752L;
+	private static final long serialVersionUID = 1L;
 
 	private String query = "*:*";
 
@@ -21,8 +21,14 @@ public class QueryForm implements Serializable {
 
 	private Boolean dataImportStatus;
 
-	/** 上漲天數 */
+	/** 上漲/下跌/持平 狀態選項 */
+	private String trendStatus;
+
+	/** 上漲/下跌/持平 天數 */
 	private Integer riseDays;
+
+	/** 持平時波動範圍 */
+	private Integer stableRange;
 
 	/** 周六日修正天數 */
 	private Integer offsetDays = 0;
@@ -84,6 +90,14 @@ public class QueryForm implements Serializable {
 		this.dataImportStatus = dataImportStatus;
 	}
 
+	public String getTrendStatus() {
+		return trendStatus;
+	}
+
+	public void setTrendStatus(String trendStatus) {
+		this.trendStatus = trendStatus;
+	}
+
 	public Integer getRiseDays() {
 		return riseDays;
 	}
@@ -122,6 +136,14 @@ public class QueryForm implements Serializable {
 
 	public void setMinDealStockAmount(Integer minDealStockAmount) {
 		this.minDealStockAmount = minDealStockAmount;
+	}
+
+	public Integer getStableRange() {
+		return stableRange;
+	}
+
+	public void setStableRange(Integer stableRange) {
+		this.stableRange = stableRange;
 	}
 
 }
