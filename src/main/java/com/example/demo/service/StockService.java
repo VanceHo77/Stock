@@ -133,8 +133,7 @@ public class StockService {
 		Instant i1 = DateUtil.parserDateText(lastUpdated);
 		Instant i2 = DateUtil.parserDateText(csvDate);
 		boolean b1 = i1.isBefore(i2);
-		boolean b2 = i1.equals(i2);
-		return b1 || b2;
+		return b1;
 	}
 
 	private static int parseInt(String i) {
@@ -207,14 +206,12 @@ public class StockService {
 							continue;
 						}
 					} else if (TrendStatus.持平.name().equals(form.getTrendStatus())) {
-						double percent = beforeStock.getClosingPrice() * 0.01 * form.getStableRange();
-						double lower = curPrice - percent;
-						double upper = curPrice + percent;
-						if ((lower <= curPrice) && (curPrice) <= upper) {
+						if ((0 - form.getStableRange()) <= stock.getDifferencePrice()
+								&& stock.getDifferencePrice() <= form.getStableRange()) {
 							beforeStock = stock;
 							riseCount++;
-							continue;
 						}
+						continue;
 					}
 				}
 

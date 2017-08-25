@@ -45,7 +45,7 @@
         <option th:each="thrend: ${trendStatus}" th:value="${thrend.name()}" th:text="${thrend.name()}"></option>
       </select>
       天數<input type="number" name="riseDays" value="3" /> 
-      <span id="stableBlock" style="display: none;">持平波動範圍  &plusmn;(%)
+      <span id="stableBlock" style="display: none;">持平時的漲跌價差  &plusmn;(元)
       <input type="text" name="stableRange" /></span>週六/日修正天數
       <select id="offsetDays" name="offsetDays">
         <option value="0">無</option>

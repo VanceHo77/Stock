@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -25,7 +27,9 @@ import com.example.demo.model.StockSchema;
 @Service
 public class SolrService {
 
-	static final String URL = "http://localhost:8983/solr/core0";
+	static final String SOLR_URL = "http://localhost:8983/solr/core0";
+
+	static final String SOLR_PING_URL = SOLR_URL + "/admin/ping";
 
 	static final String DATE_FORMAT = "%s/%s/%s";
 
@@ -35,7 +39,7 @@ public class SolrService {
 	public List<StockSchema> query(QueryForm form) {
 		List<StockSchema> list = new ArrayList<StockSchema>();
 
-		HttpSolrClient client = new HttpSolrClient(URL);
+		HttpSolrClient client = new HttpSolrClient(SOLR_URL);
 		client.setConnectionTimeout(5000);
 
 		SolrQuery query = new SolrQuery();
@@ -68,10 +72,22 @@ public class SolrService {
 		long t1 = System.currentTimeMillis();
 		long t2;
 		try {
+			// 先檢查有沒有開啟solr
+			URL url = new URL(SOLR_PING_URL);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			connection.connect();
+			int code = connection.getResponseCode();
+			if (code != 200) {
+				rpsMsg.setIsSuccess(false);
+				rpsMsg.setMessage("請開啟solr");
+				return rpsMsg;
+			}
+
 			Collection<StockSchema> docs = stockService.readStockData(doFull);
 
 			if (docs != null && docs.size() > 0) {
-				HttpSolrClient client = new HttpSolrClient(URL);
+				HttpSolrClient client = new HttpSolrClient(SOLR_URL);
 				int maxRows = 10000;
 				BigDecimal total = new BigDecimal(String.valueOf(docs.size()));
 				BigDecimal div = new BigDecimal(String.valueOf(maxRows));
@@ -145,7 +161,7 @@ public class SolrService {
 
 	public boolean delAllDocs() {
 		try {
-			HttpSolrClient client = new HttpSolrClient(URL);
+			HttpSolrClient client = new HttpSolrClient(SOLR_URL);
 			client.deleteByQuery("*:*");
 			client.commit();
 			client.close();

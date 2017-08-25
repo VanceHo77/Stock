@@ -27,7 +27,7 @@ public class QueryForm implements Serializable {
 	/** 上漲/下跌/持平 天數 */
 	private Integer riseDays;
 
-	/** 持平時波動範圍 */
+	/** 持平時漲跌價差 */
 	private Double stableRange;
 
 	/** 周六日修正天數 */
