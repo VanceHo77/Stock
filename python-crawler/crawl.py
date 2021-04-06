@@ -77,6 +77,8 @@ class Crawler():
         date_str = '{0}/{1:02d}/{2:02d}'.format(date_tuple[0] - 1911, date_tuple[1], date_tuple[2])
         ttime = str(int(time.time()*100))
         url = 'http://www.tpex.org.tw/web/stock/aftertrading/daily_close_quotes/stk_quote_result.php?l=zh-tw&d={}&_={}'.format(date_str, ttime)
+        logging.info("Data Source URL:{}".format(url))
+
         page = requests.get(url)
 
         if not page.ok:
@@ -107,7 +109,8 @@ class Crawler():
 
     def get_data(self, date_tuple):
         print('Crawling {}'.format(date_tuple))
-        self._get_tse_data(date_tuple)
+        # 大盤指數
+        # self._get_tse_data(date_tuple)
         self._get_otc_data(date_tuple)
 
 def main():
@@ -157,9 +160,9 @@ def main():
             try:
                 crawler.get_data((first_day.year, first_day.month, first_day.day))
                 error_times = 0
-            except:
+            except Exception as e:
                 date_str = first_day.strftime('%Y/%m/%d')
-                logging.error('Crawl raise error {}'.format(date_str))
+                logging.error('Crawl raise error {} {}'.format(date_str, e))
                 error_times += 1
                 continue
             finally:
@@ -179,9 +182,9 @@ def main():
             try:
                 crawler.get_data((first_day.year, first_day.month, first_day.day))
                 error_times = 0
-            except:
+            except Exception as e:
                 date_str = first_day.strftime('%Y/%m/%d')
-                logging.error('Crawl raise error {}'.format(date_str))
+                logging.error('Crawl raise error {} {}'.format(date_str, e))
                 error_times += 1
                 continue
             finally:
