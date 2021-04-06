@@ -22,3 +22,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+Python-crawler/data/
+Python-crawler/log/
